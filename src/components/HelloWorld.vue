@@ -101,33 +101,36 @@ export default {
   methods:{
      async createWallet2(){
       let isFailed = false
-      for (let index = 0; index < 200; index++) {
+      let total=200
+      for (let index = 0; index < total; index++) {
            //获取钱包数据
+          let dateBegin = new Date() //
           let result = await createWallet("dewe23")
-          console.log("#### 生成钱包数据 result = ", result)
+          //console.log("#### 生成钱包数据 result = ", result)
 
           // 解密主密钥
           let result2 =  await decryptMasterKey(result.saltRandom, result.masterKeyEncryptHex,result.password)
-          console.log("result2 = ", result2) 
-
-
-          console.log("result.masterKey = ", result.masterKey) 
-          console.log("result.address = ", result.address) 
-          console.log("result.mnemonic = ", result.mnemonic) 
-
-          console.log("result2.masketKey = ", result2.masketKey) 
-          console.log("result2.address = ", result2.address) 
-          console.log("result2.mnemonic = ", result2.mnemonic) 
-
+          //console.log("#### 返解析钱包数据 DeResult = ", result2) 
+          let dateEnd = new Date();//获取当前时间
+          let costTimeMs=dateEnd.getTime()-dateBegin.getTime()
           if (result2.address===result.address && result2.masketKey===result.masterKey && result2.mnemonic===result.mnemonic){
-            console.log("---- pass ---------------- index= ", index)
+            console.log(`Total=${total},index[${index}]=pass;costTime=${costTimeMs}ms.....`)
           }else{
             isFailed=true
-            console.log("--------------------- failed ----->>>>>> index= ", index)
+            console.log("#### 生成钱包数据 result = ", result)
+            console.log("#### 返解析钱包数据 DeResult = ", result2) 
+            console.log(`Total=${total},index[${index}]=failed;costTime=${costTimeMs}ms.....`)
+            break
 
           }
         }
-          console.log("---- the fial result.isFailed = ", isFailed)
+
+        if (!isFailed){
+          console.log("---- the fial result. All right" ) 
+        }else{
+          console.log("---- the fial result: something is wrong = ", isFailed)
+        }
+          
       }
   }
 }

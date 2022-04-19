@@ -19,3 +19,21 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+## 2、run docker
+### 2.1 build
+```
+./runBuild
+```
+
+### 2.2 run with docker
+
+```
+docker run -d --name wallet-sdk -p 8080:80 registry.paradeum.com/nft/wallet-sdk:v0.0.2
+```
+
+### 2.3 visit
+```
+http://localhost:8080
+```
