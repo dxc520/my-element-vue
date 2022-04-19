@@ -1,15 +1,35 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import WalletSdk from '@/components/WalletSdk'
+
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [
+export const constantRoutes = [
+  {
+    path: '/wallet',
+    name: 'WalletSdk',
+    component: WalletSdk
+  },
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'WalletSdk',
+      component: WalletSdk
     }
   ]
-})
+  const createRouter = () => new Router({
+    mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
+
+  const router = createRouter()
+
+  // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+  export function resetRouter() {
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // reset router
+  }
+  
+  export default router
