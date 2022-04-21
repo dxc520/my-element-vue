@@ -67,23 +67,27 @@ export default {
         async createWallet2(total){
         let isFailed = false
         //let total=2
-         let message = "";
+        let message = "";
+        let successTotal=0
+
         for (let index = 0; index < total; index++) {
             //获取钱包数据
             let dateBegin = new Date() //
             let result = await createWallet("dewe23")
-            console.log("#### 生成钱包数据 result = ", result)
+            //console.log("#### 生成钱包数据 result = ", result)
 
             // 解密主密钥
             let result2 =  await decryptMasterKey(result.saltRandom, result.masterKeyEncryptHex,result.password)
-            console.log("#### 返解析钱包数据 DeResult = ", result2) 
+            //console.log("#### 返解析钱包数据 DeResult = ", result2) 
             let dateEnd = new Date();//获取当前时间
             let costTimeMs=dateEnd.getTime()-dateBegin.getTime()
            
             if (result2.address===result.address && result2.masketKey===result.masterKey && result2.mnemonic===result.mnemonic){
                let item=`Total=${total},index[${index}]=pass;costTime=${costTimeMs}ms.....`
-               message=`${item}<br/>${message}`
-                console.log(item)
+               //message=`${item}<br/>${message}`
+               successTotal++
+               message=`Total=${total},successTotal=${successTotal},currentIndex[${index}]`
+               console.log(item)
             }else{
                 isFailed=true
                 console.log("#### 生成钱包数据 result = ", result)

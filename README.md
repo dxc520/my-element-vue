@@ -30,7 +30,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ### 2.2 run with docker
 
 ```
-docker run -d --name wallet-sdk -p 8080:80 registry.paradeum.com/nft/wallet-sdk:v0.0.4
+docker run -d --name wallet-sdk -p 8080:80 registry.paradeum.com/test/wallet-sdk:v0.0.7
 ```
 
 ### 2.3 visit
