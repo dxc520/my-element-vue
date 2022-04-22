@@ -8,11 +8,6 @@ Vue.use(Router)
 
 export const constantRoutes = [
   {
-    path: '/wallet',
-    name: 'WalletSdk',
-    component: WalletSdk
-  },
-    {
       path: '/',
       name: 'WalletSdk',
       component: WalletSdk
