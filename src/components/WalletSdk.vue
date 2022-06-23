@@ -92,10 +92,15 @@ export default {
           let result2 = await walletSdk.decryptMasterKey(
             result.saltRandom, 
             result.cryptographicAuthenticationMasterKeyHex, 
-            "123");
+           // "123"
+           result.password
+           );
 
           //console.log( '#### 返解析钱包数据 DeResult = ', result2, result2.masterKey);
 
+        try{
+
+        
           let dateEnd = new Date(); //获取当前时间
           let costTimeMs = dateEnd.getTime() - dateBegin.getTime();
 
@@ -113,7 +118,6 @@ export default {
 
           } else {
             isFailed = true;
-            console.log("#### 生成钱包数据 result = ", result);
             console.log("#### 返解析钱包数据 DeResult = ", result2);
             let item = `Total=${total},index[${index}]=failed;costTime=${costTimeMs}ms.....`;
             message = `${item}<br/>${message}`;
@@ -131,13 +135,26 @@ export default {
             }
             console.log("done: All success");
           }
+
+        }catch(error){
+          index = index + 1;
+          this.note = message;
+          console.log(error);
+          if (index >= total) {
+            if (this.timer) {
+              this.$set(this, "note", `Done,sth is wrong <br/> ${message}`);
+              clearInterval(this.timer);
+            }
+            console.log("done: Sth si wrong");
+          }
+        }
+
         }, 1000);
       } catch (error) {
         console.log("error = ", error);
-        this.note = `something is wrong <br/> ${message}`;
-        if (this.timer) {
-           clearInterval(this.timer);
-        }
+        this.note = `something is wrong <br/> ${message}`;        
+        clearInterval(this.timer);
+
       }
     },
   },
