@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { createWallet, decryptMasterKey } from "wallet-utils-create";
+import walletSdk from 'wallet-utils-create';
 
 export default {
   name: "WalletSdk",
@@ -85,15 +85,14 @@ export default {
         this.timer = setInterval(async () => {
           //获取钱包数据
           let dateBegin = new Date(); //
-          let result = await createWallet("dewe23");
-          //console.log('#### 生成钱包数据 result = ', result);
+          let result = await walletSdk.createWallet("dewe23");
+          console.log('#### 生成钱包数据 result = ', result);
 
           // 解密主密钥
-          let result2 = await decryptMasterKey(
-            result.saltRandom,
-            result.masterKeyEncryptHex,
-            result.password
-          );
+          let result2 = await walletSdk.decryptMasterKey(
+            result.saltRandom, 
+            result.cryptographicAuthenticationMasterKeyHex, 
+            "123");
 
           //console.log( '#### 返解析钱包数据 DeResult = ', result2, result2.masterKey);
 
@@ -105,11 +104,13 @@ export default {
             result.masterKey === result2.masterKey &&
             result.mnemonic === result2.mnemonic
           ) {
-            let item = `Total=${total},index[${index}]=pass;costTime=${costTimeMs}ms.....`;
+            let item = `Total=${total},index[${index}]=pass;costTime=${costTimeMs}ms...`;
             //message = `${item}<br/>${message}`;
             successTotal++;
             message = `Total=${total};successTotal=${successTotal};currentIndex[${index}]`
             console.log(item);
+            //console.log("wallet=",result2);
+
           } else {
             isFailed = true;
             console.log("#### 生成钱包数据 result = ", result);
@@ -130,10 +131,13 @@ export default {
             }
             console.log("done: All success");
           }
-        }, 1);
+        }, 1000);
       } catch (error) {
         console.log("error = ", error);
         this.note = `something is wrong <br/> ${message}`;
+        if (this.timer) {
+           clearInterval(this.timer);
+        }
       }
     },
   },
